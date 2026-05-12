@@ -359,8 +359,60 @@ NSString *const kShouldFixTitleViewBugKey = @"kShouldFixTitleViewBugKey";
 }
 
 - (UIView *)qmui_contentView {
-    return [self valueForKeyPath:@"visualProvider.contentView"];
+
+    // iOS 17+ 开始 UINavigationBar 内部结构变化较大
+    // 禁止继续使用 KVC 访问 visualProvider.contentView
+    if (@available(iOS 17.0, *)) {
+
+        static Class contentViewClass;
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            contentViewClass = NSClassFromString(@"_UINavigationBarContentView");
+        });
+
+        // 优先精确匹配
+        if (contentViewClass) {
+            for (UIView *subview in self.subviews) {
+                if ([subview isKindOfClass:contentViewClass]) {
+                    return subview;
+                }
+            }
+        }
+
+        // fallback：防止 Apple 再次改类名
+        for (UIView *subview in self.subviews) {
+            NSString *className = NSStringFromClass(subview.class);
+
+            if ([className containsString:@"ContentView"]) {
+                return subview;
+            }
+        }
+
+        return nil;
+    }
+
+    // iOS 16及以下继续沿用旧实现
+    @try {
+        return [self valueForKeyPath:@"visualProvider.contentView"];
+    } @catch (NSException *exception) {
+
+#ifdef DEBUG
+        NSLog(@"QMUI UINavigationBar qmui_contentView exception: %@", exception);
+#endif
+
+        // fallback
+        for (UIView *subview in self.subviews) {
+            NSString *className = NSStringFromClass(subview.class);
+
+            if ([className containsString:@"ContentView"]) {
+                return subview;
+            }
+        }
+
+        return nil;
+    }
 }
+
 
 - (void)qmuinb_fixTitleViewLayoutInIOS16 {
     // _UINavigationBarTitleControl，在每次转场动画时都会被重建，但无动画则一直都是这个实例（横竖屏切换也是同一个实例）

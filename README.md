@@ -1,14 +1,16 @@
-# QMUI iOS
+# DZQMUI iOS
+
+> Fork 自 [腾讯 QMUI_iOS](https://github.com/Tencent/QMUI_iOS)，在原有基础上增加了 DZ 前缀。
+
 <p>
   <img src="https://user-images.githubusercontent.com/1190261/142202676-0b40a655-90b0-4aab-a761-f6a9185575bf.png" width="500" alt="Banner" />
 </p>
 QMUI iOS 是一个致力于提高项目 UI 开发效率的解决方案，其设计目的是用于辅助快速搭建一个具备基本设计还原效果的 iOS 项目，同时利用自身提供的丰富控件及兼容处理，
 让开发者能专注于业务需求而无需耗费精力在基础代码的设计上。不管是新项目的创建，或是已有项目的维护，均可使开发效率和项目质量得到大幅度提升。
 
-[![QMUI Team Name](https://img.shields.io/badge/Team-QMUI-brightgreen.svg?style=flat)](https://github.com/QMUI "QMUI Team")
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://opensource.org/licenses/MIT "Feel free to contribute.")
 
-开发者：深圳市腾讯计算机系统有限公司
+原项目：[Tencent/QMUI_iOS](https://github.com/Tencent/QMUI_iOS)
 
 ## 功能特性
 ### 全局 UI 配置
